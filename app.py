@@ -1,6 +1,13 @@
-from flask import Flask , render_template , request , redirect , url_for , session
+#flask and sqlalchemy imports
+from flask import Flask , render_template  as rt , request , redirect , url_for , session
 from flask_sqlalchemy import SQLAlchemy
+
+#imports from model.py
 from models.model import *
+
+
+
+#random immports for other things
 import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__)) #just to make it work in case we change the directory
@@ -14,8 +21,12 @@ app.app_context().push()    #basically like a manager that manages the app conte
 
 
 
-
+#this import is here because we need to import the routes after the app is created
+#I tried doing it before that and it crashed.
+#this issue is called circular import issue. VERY IMPORTANT!!!!!
+#imports from controller.py
+from controllers.controller import *
 
 if __name__ == '__main__':
-    db.create_all()
+    db.create_all() #creates all the database
     app.run(debug=True)

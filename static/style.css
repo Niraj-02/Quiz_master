@@ -1,0 +1,13 @@
+/* login page style starts here  */
+
+#form-body{
+    border: 3px inset #794909;
+    width: 500px;
+    height: 340px;
+    margin: auto;
+    margin-top: 155px; 
+    padding: 15px;
+    border-radius: 25px;
+}
+
+
