@@ -19,6 +19,11 @@ def home():
 def login():
     return rt("login.html")
 
+@app.route('/register' , methods = ['GET' , 'POST'])
+def register():
+    return rt("register.html")
+
+
 @app.route('/gpt' , methods = ['GET' , 'POST'])
 def gpt():
     return rt("home2.html")
