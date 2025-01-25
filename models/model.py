@@ -47,3 +47,12 @@ class Question(db.Model):
     option4 = db.Column(db.String(120), nullable=False)
     correct_option = db.Column(db.String(120), nullable=False)
     quizID = db.Column(db.Integer, db.ForeignKey('quiz.quizID'), nullable=False)
+
+
+class Scores(db.Model):
+    __tablename__ = 'scores'
+    scoreID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    userID = db.Column(db.Integer, db.ForeignKey('user.userID'), nullable=False)
+    quizID = db.Column(db.Integer, db.ForeignKey('quiz.quizID'), nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+    
