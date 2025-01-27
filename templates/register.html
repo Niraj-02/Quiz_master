@@ -9,26 +9,44 @@
 
             <h2 style="text-align: center;margin-top: 53px;" >Quiz Master</h2>            
             
-            <div id = "form-body">
+            <div id = "reg_form">
                 <!-- style="text-align: center;" -->
                 <h3 style="display: inline;">Create a free account</h3>
                 <br>
                 <br>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="Shubham">
-                </div>
-                
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="****">
-                </div>
 
-                <button type="button" class="btn btn-success">Login</button>
-                <button type="button" class="btn btn-success">Register</button>
+                <form action="/register" method="post">
+                    <div class="mb-3">
+                        <label for="fullname" class="form-label">Full name</label>
+                        <input name="fullname"  type="text" class="form-control" id="fullname" placeholder="your name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input name="email" type="text" class="form-control" id="email" placeholder="abc@xyz.com">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input name="username" type="text" class="form-control" id="username" placeholder="Shubham">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input name="password" type="password" class="form-control" id="password" placeholder="****">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Sign up</button>
+                </form>
                 
             </div>
-        
+
+            <div style="text-align: center; font-size: 25px; margin-top: 9px;">
+                Already have an account? <a href="/login" style="margin-left: 6px;font-size: 20px; color: black;">Login</a>
+                
+            </div>
+
+            
     
 </body>
 </html>

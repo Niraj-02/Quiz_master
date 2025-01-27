@@ -6,29 +6,39 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body style="background-color: #eeeeee; font-family: cursive;" >
-
-            <h2 style="text-align: center;margin-top: 53px;" >Quiz Master</h2>            
             
-            <div id = "form-body">
-                <!-- style="text-align: center;" -->
-                <h3 style="display: inline;">Log in to you Quiz Master account</h3>
-                <br>
-                <br>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="Shubham">
-                </div>
+            <h2 style="text-align: center;margin-top: 53px;" >Quiz Master</h2>            
+            {% if error %}
+                        <div class="alert alert-danger" role="alert" style="text-align: center;">
+                            {{ error }}
+                        </div>
+            {% endif %}
+            <div id = "login_form">
                 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="****">
-                </div>
+                <h4 style="display: inline;">Log in to you Quiz Master account</h4>
+                <br>
+                <br>
+                <form action="/login" method="post">
+                    
 
-                <button type="button" class="btn btn-success">Login</button>
-                <button type="button" class="btn btn-success">Register</button>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input name = "username" type="text" class="form-control" id="username" placeholder="Shubham">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input name = "password" type="password" class="form-control" id="password" placeholder="****">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Login</button>
+                </form>
+            </div>
+            
+            <div style="text-align: center; font-size: 25px; margin-top: 9px;">
+                Don't have an account? <a href="/register" style="margin-left: 6px;font-size: 20px; color: black;">Sign up</a>
                 
             </div>
-        
     
 </body>
 </html>

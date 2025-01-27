@@ -6,10 +6,12 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'user'
     userID = db.Column(db.Integer, primary_key=True , autoincrement=True)
+    fullname = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    qualification = db.Column(db.String(120))
+    type = db.Column(db.String(15), nullable=False , default = 'public')
+    
 
 
 class Subject(db.Model):

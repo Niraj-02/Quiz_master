@@ -7,7 +7,7 @@ from models.model import *
 
 
 
-#random immports for other things
+#random imports for other things
 import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__)) #just to make it work in case we change the directory
@@ -17,7 +17,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 os.path.join(current_dir, 'database.sqlite3')
 
 db.init_app(app) #connects our database to the app part of the flask
-app.app_context().push()    #basically like a manager that manages the app context and pushes it to the app. database wont be created without this line.
+app.app_context().push()    #basically like a manager that manages the app context and pushes it to the app. database won't be created without this line.
 
 
 
@@ -29,4 +29,11 @@ from controllers.controller import *
 
 if __name__ == '__main__':
     db.create_all() #creates all the database
+
+    super_user = User.query.filter_by(username = 'admin_Niraj').first()
+    if super_user is None:
+        admin = User(fullname = 'Niraj' , email = 'admin@123' , username = 'admin_Niraj' , password = '7548' , type = 'admin')
+        db.session.add(admin)
+        db.session.commit()
+    # db.commit_all() #commits the changes to the database
     app.run(debug=True)

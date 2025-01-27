@@ -1,9 +1,9 @@
 /* login page style starts here  */
 
-#form-body{
+#login_form{
     border: 3px inset #794909;
     width: 500px;
-    height: 340px;
+    height: 300px;
     margin: auto; 
     margin-top: 20px;
     padding: 15px;
@@ -11,3 +11,14 @@
 }
 
 
+/* signup page styling starts here  */
+
+#reg_form{
+    border: 3px inset #794909;
+    width: 500px;
+    height: 490px;
+    margin: auto; 
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 25px;
+}
