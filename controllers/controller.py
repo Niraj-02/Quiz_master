@@ -53,6 +53,14 @@ def register():
         password = request.form['password']
         print(fullname , email , username , password)
 
+        #exception handling:
+        #ex-1 -> used username
+
+        user1 = User.query.filter_by(username = username).first()
+        if user1 is not None:
+            return rt("register.html" , error = "This username is already taken. Please choose a new username")
+    
+
         user = User(fullname = fullname , email = email , username = username , password = password)
         db.session.add(user)
         db.session.commit()
