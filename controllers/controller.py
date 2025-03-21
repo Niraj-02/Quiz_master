@@ -153,6 +153,19 @@ def edit_sub(subjectID):
             return redirect(url_for('subjects'))
 
 
+#Delete Subject Route
+@app.route('/del_sub/<int:subjectID>' , methods = ['POST'])
+def del_sub(subjectID):
+    if ('username' in session) and (session['username'] == 'Admin'):
+        subject = Subject.query.filter_by(subjectID = subjectID).first()
+        
+        #error handling in case subject not found
+        if not subject:
+            return "Subject not found!", 404
+        
+        db.session.delete(subject)
+        db.session.commit()
+        return redirect(url_for('subjects'))
 
 #after admin wrk
 
