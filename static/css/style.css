@@ -22,3 +22,17 @@
     padding: 15px;
     border-radius: 25px;
 }
+
+
+
+
+/* Add_sub styling here  */
+#add_sub{
+    border: 3px inset #794909;
+    width: 500px;
+    height: 360px;
+    margin: auto; 
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 25px;
+}

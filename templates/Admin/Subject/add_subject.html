@@ -1,0 +1,36 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Subject Management
+{% endblock %}
+
+
+
+
+
+{% block content %}
+<div class="container-fluid" id="add_sub">
+    <h3 style="color: brown; font-family: cursive;">Add New Subject</h3>
+    <br>
+    <form action="/add_subject" method="post">
+        <div class="mb-3">
+            <label for="sub_name" class="form-label">Subject name</label>
+            <input name="sub_name"  type="text" class="form-control" id="sub_name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="sub_desc" class="form-label">Subject description</label>
+            <textarea name="sub_desc"  type="text" class="form-control" id="sub_desc" required> </textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Add Subject</button>
+    </form>
+
+
+</div>
+{% endblock %}
+
+
+{% block footer %}
+    this is footer
+{% endblock %}

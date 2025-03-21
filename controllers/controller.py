@@ -98,7 +98,7 @@ def admin_dash():
 def subjects():
     if ('username' in session) and (session['username'] == 'Admin'):
         subjects = Subject.query.all()
-        return rt("Admin/subjects.html" , subjects = subjects)
+        return rt("Admin/Subject/subjects.html" , subjects = subjects)
     else:
         return redirect(url_for('login'))
 
@@ -115,6 +115,46 @@ def chapters():
 
 
 
+#Add Subject route
+@app.route('/add_subject' , methods = ['GET' , 'POST'])
+def add_subject():
+    if ('username' in session) and (session['username'] == 'Admin'):
+        if request.method == 'GET':
+            return rt("Admin/Subject/add_subject.html")
+        elif request.method == 'POST':
+            subjectName = request.form['sub_name']
+            subjectDescription = request.form['sub_desc']
+            subject = Subject(subjectName = subjectName , subjectDescription = subjectDescription)
+            db.session.add(subject)
+            db.session.commit()
+            return redirect(url_for('subjects'))
+    else:
+        return redirect(url_for('login'))
+
+
+#Edit Subject Route
+@app.route('/edit_sub/<int:subjectID>' , methods = ['GET' , 'POST'])
+def edit_sub(subjectID):
+    if ('username' in session) and (session['username'] == 'Admin'):
+        subject = Subject.query.filter_by(subjectID = subjectID).first()
+        
+        #error handling in case subject not found
+        if not subject:
+            return "Subject not found!", 404
+    
+        if request.method == 'GET':
+            return rt("Admin/Subject/edit_sub.html" , subject = subject)
+        
+        elif request.method == 'POST':
+            subject.subjectName = request.form['sub_name']
+            subject.subjectDescription = request.form['sub_desc']
+            
+            db.session.commit()
+            return redirect(url_for('subjects'))
+
+
+
+#after admin wrk
 
 
 #create quiz route

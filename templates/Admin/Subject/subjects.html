@@ -19,7 +19,7 @@ Subject Management
 
         <div class="d-flex"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
         <h5 style="color: blueviolet;">Available Subjects</h5>
-        <button class="btn btn-outline-primary" style="margin-left: 950px;" href="#" >+ Add Subject</button>
+        <a href="{{ url_for('add_subject') }}" class="btn btn-outline-primary" style="margin-left: 950px;">+ Add Subject</a>
         </div>
 
         <table class="table">
@@ -37,7 +37,8 @@ Subject Management
                     <td class="col-3">{{ subject.subjectName }}</td>
                     <td class="col-6">{{ subject.subjectDescription }}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary">Edit</button>
+                        <a href="{{url_for('edit_sub' , subjectID=subject.subjectID)}}" class="btn btn-sm btn-primary">Edit</a>
+                        
                         <button class="btn btn-sm btn-danger">Delete</button>
                     </td>
                 </tr>
