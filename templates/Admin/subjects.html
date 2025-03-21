@@ -1,0 +1,55 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Subject Management
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">Subject Management</h2>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-3"> <!-- makes it a card component with moderate padding -->
+
+        <div class="d-flex"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
+        <h5 style="color: blueviolet;">Available Subjects</h5>
+        <button class="btn btn-outline-primary" style="margin-left: 950px;" href="#" >+ Add Subject</button>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-1">Subject ID</th>
+                    <th class="col-3">Name</th>
+                    <th class="col-6">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject in subjects %}
+                <tr>
+                    <td class="col-1">{{ subject.subjectID }}</td>
+                    <td class="col-3">{{ subject.subjectName }}</td>
+                    <td class="col-6">{{ subject.subjectDescription }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">Edit</button>
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+    this is footer
+{% endblock %}

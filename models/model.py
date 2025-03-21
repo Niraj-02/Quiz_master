@@ -11,6 +11,8 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     type = db.Column(db.String(15), nullable=False , default = 'public')
+
+    scores = db.relationship('Scores', backref='user', lazy=True)
     
 
 
@@ -20,6 +22,8 @@ class Subject(db.Model):
     subjectName = db.Column(db.String(80), unique=True, nullable=False)
     subjectDescription = db.Column(db.String(120))
 
+    chapters = db.relationship('Chapter', backref='subject', lazy=True , cascade="all, delete")
+
 
 class Chapter(db.Model):
     __tablename__ = 'chapter'
@@ -27,6 +31,8 @@ class Chapter(db.Model):
     chapterName = db.Column(db.String(80), unique=True, nullable=False)
     chapterDescription = db.Column(db.String(120))
     subjectID = db.Column(db.Integer, db.ForeignKey('subject.subjectID'), nullable=False)
+    
+    quiz = db.relationship('Quiz', backref='chapter', lazy=True , cascade="all, delete")
     
 
 
@@ -37,7 +43,8 @@ class Quiz(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     remarks = db.Column(db.String(120))
     chapterID = db.Column(db.Integer, db.ForeignKey('chapter.chapterID'), nullable=False)
-    chapter = db.relationship('Chapter', backref='quiz', lazy=True)
+    
+    question = db.relationship('Question', backref='quiz', lazy=True , cascade="all, delete")
 
 
 class Question(db.Model):
@@ -50,6 +57,7 @@ class Question(db.Model):
     option4 = db.Column(db.String(120), nullable=False)
     correct_option = db.Column(db.String(120), nullable=False)
     quizID = db.Column(db.Integer, db.ForeignKey('quiz.quizID'), nullable=False)
+    
 
 
 class Scores(db.Model):
@@ -58,4 +66,6 @@ class Scores(db.Model):
     userID = db.Column(db.Integer, db.ForeignKey('user.userID'), nullable=False)
     quizID = db.Column(db.Integer, db.ForeignKey('quiz.quizID'), nullable=False)
     score = db.Column(db.Integer, nullable=False)
+    
+    quiz = db.relationship('Quiz', backref='scores', lazy=True)
     

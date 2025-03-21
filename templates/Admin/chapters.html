@@ -1,0 +1,65 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Chapter Management
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">Chapter Management</h2>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-3"> <!-- makes it a card component with moderate padding -->
+        <div class="d-flex"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
+            <h4 style="color: rgb(43, 226, 58); margin-top: 15px;">Chapter list</h4>
+            <button class="btn btn-outline-primary" style="margin-left: 950px;" href="#" >+ Add Chapter</button>
+        </div>
+        {% for subject in subjects %}
+        
+        <div class="d-flex"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
+            <h6 style="color: blueviolet; margin-top: 15px;">{{subject.subjectName}}</h6>
+            
+        </div>
+              
+
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <th class="col-1">Chapter ID</th>
+                    <th class="col-3">Name</th>
+                    <th class="col-6">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for chapter in subject.chapters %}
+                <tr>
+                    <td class="col-1">{{ chapter.chapterID }}</td>
+                    <td class="col-3">{{ chapter.chapterName }}</td>
+                    <td class="col-6">{{ chapter.chapterDescription }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">Edit</button>
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+        
+
+        {% endfor %}
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+    this is footer
+{% endblock %}
+
