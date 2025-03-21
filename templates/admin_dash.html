@@ -1,0 +1,57 @@
+{% extends "admin_layout.html" %}
+
+{% block title %}
+Admin-dashboard
+{% endblock %}
+
+
+
+
+
+{% block content %}
+    <div class="container mt-4 text-center">
+        <h2 class="fw-bold">ADMIN DASHBOARD</h2>
+    </div>
+
+    <div class="container mt-4">
+        <div class="card p-3"> <!-- makes it a card component with moderate padding -->
+
+            <div class="d-flex"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
+            <h5 style="color: blueviolet;">Upcoming Quizzes</h5>
+            <button class="btn btn-outline-primary" style="margin-left: 950px;" href="{{ url_for('create_quiz')}}" >+ Add Quiz</button>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Quiz ID</th>
+                        <th>Date</th>
+                        <th>Duration (mins)</th>
+                        <th>Chapter Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quiz in quizzes %}
+                    <tr>
+                        <td>{{ quiz.quizID }}</td>
+                        <td>{{ quiz.date_of_quiz.strftime('%d-%m-%Y') }}</td>
+                        <td>{{ quiz.duration }}</td>
+                        <td>{{ quiz.chapter.chapterName }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        </div>
+
+
+{% endblock %}
+
+{% block footer %}
+    this is footer
+{% endblock %}

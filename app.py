@@ -38,9 +38,9 @@ app.secret_key = secrets.token_hex(16)
 if __name__ == '__main__':
     db.create_all() #creates all the database
 
-    super_user = User.query.filter_by(username = 'admin_Niraj').first()
+    super_user = User.query.filter_by(username = 'Admin').first()
     if super_user is None:
-        admin = User(fullname = 'Niraj' , email = 'admin@123' , username = 'admin_Niraj' , password = '7548' , type = 'admin')
+        admin = User(fullname = 'Niraj Kumar' , email = 'qwizadmin@gmail.com' , username = 'Admin' , password = '7548' , type = 'admin')
         db.session.add(admin)
         db.session.commit()
     # db.commit_all() #commits the changes to the database

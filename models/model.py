@@ -37,6 +37,7 @@ class Quiz(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     remarks = db.Column(db.String(120))
     chapterID = db.Column(db.Integer, db.ForeignKey('chapter.chapterID'), nullable=False)
+    chapter = db.relationship('Chapter', backref='quiz', lazy=True)
 
 
 class Question(db.Model):
