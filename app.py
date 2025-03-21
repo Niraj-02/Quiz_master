@@ -27,6 +27,14 @@ app.app_context().push()    #basically like a manager that manages the app conte
 #imports from controller.py
 from controllers.controller import *
 
+
+# Set secret key using secrets module
+#its important to create secure sessions. Some cache related stuffs.
+import secrets
+app.secret_key = secrets.token_hex(16)
+
+
+
 if __name__ == '__main__':
     db.create_all() #creates all the database
 

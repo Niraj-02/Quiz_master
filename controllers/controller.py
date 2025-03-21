@@ -38,8 +38,8 @@ def login():
             return rt("login.html", error = "User not found!!")
         
 
-        
-        return rt("home.html") #redirect to dashboard later
+        session['user_id'] = user.userID
+        return rt("dashboard.html") #redirect to dashboard later
 
 
 # route for signup
