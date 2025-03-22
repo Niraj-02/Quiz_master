@@ -1,0 +1,52 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Add Question
+{% endblock %}
+
+
+
+
+
+{% block content %}
+<div class="container-fluid" id="add_sub" style="height: auto;">
+    <h3 style="color: brown; font-family: cursive;">Add Question</h3>
+    <br>
+    <form action="{{ url_for('add_question', quizID=quizID) }}" method="post">
+        <div class="mb-3">
+            <label for="question" class="form-label">Enter your question</label>
+            <textarea name="question"  type="text" class="form-control" id="question" required rows="2"> </textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="opt_1" class="form-label">Option 1</label>
+            <input name="opt_1"  type="text" class="form-control" id="opt_1" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="opt_2" class="form-label">Option 2</label>
+            <input name="opt_2"  type="text" class="form-control" id="opt_2" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="opt_3" class="form-label">Option 3</label>
+            <input name="opt_3"  type="text" class="form-control" id="opt_3" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="opt_4" class="form-label">Option 4</label>
+            <input name="opt_4"  type="text" class="form-control" id="opt_4" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="answer" class="form-label">Answer</label>
+            <input name="answer"  type="text" class="form-control" id="answer" required>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Add Question</button>
+    </form>
+
+
+</div>
+{% endblock %}
+

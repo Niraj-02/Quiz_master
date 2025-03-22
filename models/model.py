@@ -39,12 +39,13 @@ class Chapter(db.Model):
 class Quiz(db.Model):
     __tablename__ = 'quiz'
     quizID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    quizName = db.Column(db.String(80), nullable=False)
     date_of_quiz = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)
-    remarks = db.Column(db.String(120))
+    duration = db.Column(db.Integer, nullable=False)    
     chapterID = db.Column(db.Integer, db.ForeignKey('chapter.chapterID'), nullable=False)
     
-    question = db.relationship('Question', backref='quiz', lazy=True , cascade="all, delete")
+    questions = db.relationship('Question', backref='quiz', lazy=True , cascade="all, delete")
+    
 
 
 class Question(db.Model):

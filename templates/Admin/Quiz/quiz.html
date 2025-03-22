@@ -1,0 +1,72 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Quiz Management
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-4 d-flex justify-content-between">
+    <h2 class="fw-bold">Quiz Management</h2>
+    <div>
+    <a href="{{url_for('create_quiz')}}" class="btn btn-outline-success" >Create Quiz</a>
+    <a href="{{url_for('view_quiz')}}" class="btn  btn-outline-primary" >All Quizzes</a>
+    </div>
+</div>
+<br>
+<div class="container mt-4" >
+    
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for chapter in chapters %}
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!-- justify content between to keep the buttons apart in the way it is shown  -->
+                    <div class="d-flex justify-content-between" style="background-color: blanchedalmond; padding: 10px;">
+                        <h5 class="card-title">{{ chapter.chapterName }} (ID: {{chapter.chapterID}})</h5>
+                        
+                    </div>
+                    
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="col-1"><strong>Quiz ID</strong> </th>
+                                <th class="col-2"><strong>Name</strong> </th>
+                                <th class="col-2"><strong>Date</strong></th>
+                                <th class="col-2"><strong>Duration</strong> </th>
+                                <th class="col-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quiz in chapter.quiz %}
+
+                            <tr>
+                                <td>{{ quiz.quizName}}</td>
+                                <td>{{ quiz.quizID }}</td>
+                                <td>{{ quiz.date_of_quiz.strftime('%d-%b-%Y') }}</td> <!-- Format date -->
+                                <td>{{ quiz.duration }} mins</td>
+                                <td class=" d-flex align-items-center">
+                                    <a href="{{url_for('edit_quiz' , quizID=quiz.quizID)}}" class="btn btn-sm btn-outline-primary" >Edit</a>
+                                    
+                                    <form action="{{url_for('del_quiz' , quizID=quiz.quizID)}}" , method="post" , style="margin-left: 5px; display: inline;">
+                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                    
+                                </td>                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+

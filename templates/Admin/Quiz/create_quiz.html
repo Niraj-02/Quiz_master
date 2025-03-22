@@ -1,0 +1,42 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Create Quiz
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="container-fluid" id="add_sub" style="height: auto;">
+    <h3 style="color: brown; font-family: cursive;">Create quiz</h3>
+    <br>
+    <form action="/create_quiz" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Quiz name</label>
+            <input name="name"  type="text" class="form-control" id="name" required >
+        </div>
+
+        <div class="mb-3">
+            <label for="date_of_quiz" class="form-label">Date of quiz</label>
+            <input name="date_of_quiz"  type="date" class="form-control" id="date_of_quiz" required placeholder="YYYY-MM-DD">
+        </div>
+
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration (in mins)</label>
+            <input name="duration"  type="text" class="form-control" id="duration" required >
+        </div>
+
+        <div class="mb-3">
+            <label for="chapterID" class="form-label">ChapterID</label>
+            <input name="chapterID"  type="text" class="form-control" id="chapterID" required >
+        </div>
+
+        
+        <button type="submit" class="btn btn-success">Confirm</button>
+    </form>
+
+
+</div>
+{% endblock %}
+

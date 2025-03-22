@@ -22,12 +22,13 @@ Subject Management
         <a href="{{ url_for('add_subject') }}" class="btn btn-outline-primary" style="margin-left: 950px;">+ Add Subject</a>
         </div>
 
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th class="col-1">Subject ID</th>
                     <th class="col-3">Name</th>
-                    <th class="col-6">Description</th>
+                    <th class="col-4">Description</th>
+                    <th class="col-2">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,6 +55,3 @@ Subject Management
 
 {% endblock %}
 
-{% block footer %}
-    this is footer
-{% endblock %}

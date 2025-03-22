@@ -80,7 +80,11 @@ def login():
         return redirect(url_for('User.dashboard')) #redirect to dashboard later
 
 
-
+#route for logout
+@app.route('/logout' , methods = ['GET' , 'POST'])
+def logout():
+    session.pop('username' , None)
+    return redirect(url_for('login'))
 
 
 
@@ -165,8 +169,6 @@ def del_sub(subjectID):
     else:
         return redirect(url_for('login'))
 
-#subject crud is done now follow from here tmrw
-
 
 
 #Chapter Management routes
@@ -242,50 +244,185 @@ def del_chapter(chapterID):
 
 
 
-
-
-
-
-
-
-
-
-#create quiz route
-@app.route('/create_quiz/<string:username>' , methods = ['GET' , 'POST'])
-def create_quiz(username):
-    if (username not in session) or (session['username'] != 'Admin'):
+#quiz management routes
+@app.route('/quiz' , methods = ['GET' , 'POST'])
+def quiz():
+    if ('username' not in session) or (session['username'] != 'Admin'):
         return redirect(url_for('login'))
     
-    if request.method == 'GET':
-        return rt("create_quiz.html" , username = username)
-    elif request.method =='POST':
-        date_of_quiz = request.form['date_of_quiz']
-        duration = request.form['duration']
-        chapterID = request.form['chapterID']
-
-        quiz = Quiz(date_of_quiz = date_of_quiz , duration = duration , chapterID = chapterID)
-        db.session.add(quiz)
-        db.session.commit()
-
-        return redirect(url_for('admin_dash'))
-
-
-#route for quiz management
-@app.route('/quiz_management/<string:username>' , methods = ['GET' , 'POST'])
-def quiz_management(username):
-    if username != 'Admin':
-        return redirect(url_for('login'))
-
     if request.method == 'GET':
         quizzes = Quiz.query.all()
         subjects = Subject.query.all()
         chapters = Chapter.query.all()
-        user = User.query.filter_by(username = username).first()
-        return rt("quiz_management.html" , quizzes = quizzes , user=user , subjects = subjects , chapters = chapters)
+        
+        return rt("Admin/Quiz/quiz.html", quizzes = quizzes , subjects = subjects , chapters = chapters)
+    
+
+#create quiz route   
+@app.route('/create_quiz' , methods = ['GET' , 'POST'])
+def create_quiz():
+    if ('username' not in session) or (session['username'] != 'Admin'):
+        return redirect(url_for('login'))       
+
+    if request.method == 'GET':
+        return rt("Admin/Quiz/create_quiz.html")
+          
+    elif request.method =='POST':          
+        name = request.form['name']
+        date_of_quiz = request.form['date_of_quiz']        
+        formatted_date = datetime.strptime(date_of_quiz, '%Y-%m-%d').date()  # Convert to date format
+        duration = request.form['duration']
+        chapterID = request.form['chapterID']
+        
+
+        quiz = Quiz(quizName=name , date_of_quiz = formatted_date , duration = duration , chapterID = chapterID)
+        db.session.add(quiz)
+        db.session.commit()
+          
+        print("Redirecting to:", url_for('quiz'))
+        return redirect(url_for('quiz'))
 
 
 
+#route for editing quiz
+@app.route('/edit_quiz/<int:quizID>' , methods = ['GET' , 'POST'])
+def edit_quiz(quizID):
+    if ('username' not in session) or (session['username'] != 'Admin'):
+        return redirect(url_for('login'))
+    
+    quiz = Quiz.query.filter_by(quizID = quizID).first()
+    if not quiz:
+        return "Quiz not found!", 404
+    
+    if request.method == 'GET':
+        return rt("Admin/Quiz/edit_quiz.html" , quiz = quiz)
+    
+    elif request.method == 'POST':
+        date_of_quiz = request.form['date_of_quiz']
+        formatted_date = datetime.strptime(date_of_quiz, '%Y-%m-%d').date()  # Convert to date format
+        duration = request.form['duration']
+        
 
+#route for viewing quiz (edit and add questions here)
+@app.route('/view_quiz' , methods = ['GET' , 'POST'])
+def view_quiz():
+    if ('username' not in session) or (session['username'] != 'Admin'):
+        return redirect(url_for('login'))
+    
+    quizzes = Quiz.query.all()    
+    
+    if request.method == 'GET':
+        return rt("Admin/Quiz/view_quiz.html" , quizzes = quizzes)
+
+
+
+#delete quiz route
+@app.route('/del_quiz/<int:quizID>' , methods = ['POST'])
+def del_quiz(quizID):
+    if ('username' in session) and (session['username'] == 'Admin'):
+        quiz = Quiz.query.filter_by(quizID = quizID).first()
+        
+        #error handling in case chapter not found
+        if not quiz:
+            return "Quiz not found!", 404
+        
+        db.session.delete(quiz)
+        db.session.commit()
+        return redirect(url_for('quiz'))
+    else:
+        return redirect(url_for('login'))
+
+
+
+#add question route
+@app.route('/add_question/<int:quizID>' , methods = ['GET' , 'POST'])
+def add_question(quizID):
+    if ('username' not in session) or (session['username'] != 'Admin'):
+        return redirect(url_for('login'))
+    
+    if request.method == 'GET':
+        return rt("Admin/Question/add_question.html" , quizID = quizID)
+    elif request.method == 'POST':
+        statement = request.form['question']
+        option1 = request.form['opt_1']
+        option2 = request.form['opt_2']
+        option3 = request.form['opt_3']
+        option4 = request.form['opt_4']
+        correct_option = request.form['answer']        
+        
+        question = Question(question = statement , option1 = option1 , option2 = option2 , option3 = option3 , option4 = option4 , correct_option = correct_option , quizID = quizID)
+        db.session.add(question)
+        db.session.commit()
+        return redirect(url_for('view_quiz'))
+
+
+#route for editing question
+@app.route('/edit_question/<int:questionID>' , methods = ['GET' , 'POST'])
+def edit_question(questionID):
+    if ('username' not in session) or (session['username'] != 'Admin'):
+        return redirect(url_for('login'))
+    
+    question = Question.query.filter_by(questionID = questionID).first()
+    if not question:
+        return "Quiz not found!", 404
+    
+    if request.method == 'GET':
+        return rt("Admin/Question/edit_question.html" , question = question)
+    
+    elif request.method == 'POST':
+        question.question = request.form['question']
+        question.option1 = request.form['opt_1']
+        question.option2 = request.form['opt_2']
+        question.option3 = request.form['opt_3']
+        question.option4 = request.form['opt_4']
+        question.correct_option = request.form['answer']
+        
+        db.session.commit()
+        return redirect(url_for('view_quiz'))
+
+
+#route for deleting question
+@app.route('/del_question/<int:questionID>' , methods = ['POST'])
+def del_question(questionID):
+    if ('username' in session) and (session['username'] == 'Admin'):
+        question = Question.query.filter_by(questionID = questionID).first()
+        
+        #error handling in case chapter not found
+        if not question:
+            return "Question not found!", 404
+        
+        db.session.delete(question)
+        db.session.commit()
+        return redirect(url_for('view_quiz'))
+    else:
+        return redirect(url_for('login'))
+
+
+#route for Users in admin dashboard
+@app.route('/users' , methods = ['GET' , 'POST'])
+def users():
+    if ('username' not in session) or (session['username'] != 'Admin'):
+        return redirect(url_for('login'))
+    
+    users = User.query.filter_by(type='public').all()
+    return rt("Admin/User/users.html" , users = users)
+
+
+#route for deleting user account
+@app.route('/del_user/<int:userID>' , methods = ['POST'])
+def del_user(userID):
+    if ('username' in session) and (session['username'] == 'Admin'):
+        user = User.query.filter_by(userID = userID).first()
+        
+        #error handling in case chapter not found
+        if not user:
+            return "User not found!", 404
+        
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('users'))
+    else:
+        return redirect(url_for('login'))
 
 
 

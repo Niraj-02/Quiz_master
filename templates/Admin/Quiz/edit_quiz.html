@@ -1,0 +1,38 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Edit Quiz
+{% endblock %}
+
+
+
+
+
+{% block content %}
+<div class="container-fluid" id="add_sub" style="height: auto;">
+    <h3 style="color: brown; font-family: cursive;">Edit Quiz</h3>
+    <br>
+    <form action="#" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Quiz Name</label>
+            <input name="name"  type="text" class="form-control" id="name" required placeholder={{quiz.quizName}}>
+        </div>
+
+        <div class="mb-3">
+            <label for="date_of_quiz" class="form-label">Date</label>
+            <input name="date_of_quiz"  type="date" class="form-control" id="date_of_quiz" required placeholder={{quiz.date_of_quiz}}>
+        </div>
+
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration</label>
+            <input name="duration"  type="text" class="form-control" id="duration" required placeholder={{quiz.duration}}>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
+
+
+</div>
+{% endblock %}
+
+

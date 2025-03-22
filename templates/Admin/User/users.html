@@ -1,0 +1,52 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+User Management
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">User Management</h2>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-3"> <!-- makes it a card component with moderate padding -->
+
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-1">User ID</th>
+                    <th class="col-3">FullName</th>
+                    <th class="col-2">UserName</th>
+                    <th class="col-2">Email</th>
+                    <th class="col-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td >{{ user.userID }}</td>
+                    <td >{{ user.fullname }}</td>
+                    <td >{{ user.username }}</td>
+                    <td >{{ user.email}}</td>
+                    <td class="d-flex">                        
+                        <form action="{{url_for('del_user' , userID=user.userID)}}" , method="post" , style="margin-left: 5px;">
+                            <button class="btn btn-sm btn-danger">Delete Account</button>
+                        </form>                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+{% endblock %}
+
