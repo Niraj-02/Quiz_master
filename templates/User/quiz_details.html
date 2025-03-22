@@ -1,0 +1,48 @@
+{% extends "User/user_layout.html" %}
+
+{% block title %}
+View quiz
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container mt-4 text-center" style="width: 60%;">
+    <h2 class="fw-bold">Quiz Details</h2>   
+        
+    <table class="table table-bordered border-success table-striped">
+        <tbody >
+            <tr>
+                <td>ID:</td>
+                <td>{{ quiz.quizID }}</td>
+            </tr>
+
+            <tr>
+                <td>Quiz Name:</td>
+                <td>{{ quiz.quizName }}</td>
+            </tr>
+
+            <tr>
+                <td>Subject Name:</td>
+                <td>{{ quiz.chapter.subject.subjectName }}</td>
+            </tr>
+
+            <tr>
+                <td>Chapter Name:</td>
+                <td>{{ quiz.chapter.chapterName }}</td>
+            </tr>
+
+            <tr>
+                <td>Duration:</td>
+                <td>{{ quiz.duration }}</td>
+            </tr>
+
+            <tr>
+                <td>Number of questions:</td>
+                <td>{{ quiz.questions|length }}</td>
+            </tr>
+        </tbody>
+    </table>    
+</div>
+{% endblock %}

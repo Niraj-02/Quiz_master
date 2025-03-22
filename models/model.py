@@ -45,7 +45,7 @@ class Quiz(db.Model):
     chapterID = db.Column(db.Integer, db.ForeignKey('chapter.chapterID'), nullable=False)
     
     questions = db.relationship('Question', backref='quiz', lazy=True , cascade="all, delete")
-    
+    scores = db.relationship('Score', backref='quiz', lazy=True , cascade="all, delete")
 
 
 class Question(db.Model):

@@ -77,7 +77,7 @@ def login():
 
         #handles user login.
         session['username'] = user.username
-        return redirect(url_for('User.dashboard')) #redirect to dashboard later
+        return redirect(url_for('dashboard' , username=session['username'])) #redirect to dashboard later username is stored in session
 
 
 #route for logout
@@ -426,16 +426,60 @@ def del_user(userID):
 
 
 
+#user stuff starts here
 
-#user_dashboard routes
-@app.route('/User/dashboard/<string:username>' , methods = ['GET' , 'POST'])
+
+#user dashboard route
+@app.route('/dashboard/<string:username>' , methods = ['GET' , 'POST'])
 def dashboard(username):      
-    if 'username' in session:
-        user = User.query.filter_by(username = username).first()
-        return rt("User/dashboard.html" , user = user)    
-    else:
+    if 'username' not in session:        
+        return redirect(url_for('login'))
+
+    user = User.query.filter_by(username = username).first()
+    today = datetime.now().date()
+    upcoming_quizzes = Quiz.query.filter(Quiz.date_of_quiz >= today).all()      
+
+    return rt("User/dashboard.html" , user = user , upcoming_quizzes = upcoming_quizzes)    
+    
+
+
+#route for viewing quiz
+@app.route('/dashboard/<string:username>/quiz_details/<int:quizID>' , methods = ['GET' , 'POST'])
+def quiz_details(username , quizID):
+    if 'username' not in session:
         return redirect(url_for('login'))
     
+    
+    quiz = Quiz.query.filter_by(quizID = quizID).first()
+    
+    return rt("User/quiz_details.html" , quiz = quiz)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#this one later
 
 @app.route('/User/scores' , methods = ['GET' , 'POST'])
 def scores(username):
