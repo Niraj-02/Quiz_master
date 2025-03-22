@@ -7,6 +7,9 @@ from app import app
 #model import from model.py
 from models.model import *
 
+#random imports
+from datetime import datetime
+
 
 #this will be the homepage of the website. It is not finised yet.
 @app.route('/' , methods = ['GET' , 'POST'])
@@ -85,8 +88,9 @@ def login():
 @app.route('/Admin/admin_dash' , methods = ['GET' , 'POST'])
 def admin_dash():
     if 'username' in session:
-        user = User.query.filter_by(username = session['username']).first()        
-        quizzes = Quiz.query.join(Chapter).all()
+        user = User.query.filter_by(username = session['username']).first()   
+        today = datetime.now().date()     
+        quizzes = Quiz.query.join(Chapter).filter(Quiz.date_of_quiz >= today).all()
         return rt("Admin/admin_dash.html" , user = user , quizzes = quizzes)
     else:
         return redirect(url_for('login'))
@@ -102,16 +106,6 @@ def subjects():
     else:
         return redirect(url_for('login'))
 
-
-#Chapter Management routes
-@app.route('/chapters' , methods = ['GET' , 'POST'])
-def chapters():
-    if ('username' in session) and (session['username'] == 'Admin'):
-        chapters = Chapter.query.all()
-        subjects = Subject.query.all()
-        return rt("Admin/chapters.html" , chapters = chapters , subjects = subjects)
-    else:
-        return redirect(url_for('login'))
 
 
 
@@ -151,6 +145,8 @@ def edit_sub(subjectID):
             
             db.session.commit()
             return redirect(url_for('subjects'))
+    else:
+        return redirect(url_for('login'))
 
 
 #Delete Subject Route
@@ -166,8 +162,92 @@ def del_sub(subjectID):
         db.session.delete(subject)
         db.session.commit()
         return redirect(url_for('subjects'))
+    else:
+        return redirect(url_for('login'))
 
-#after admin wrk
+#subject crud is done now follow from here tmrw
+
+
+
+#Chapter Management routes
+@app.route('/chapters' , methods = ['GET' , 'POST'])
+def chapters():
+    if ('username' in session) and (session['username'] == 'Admin'):
+        chapters = Chapter.query.all()
+        subjects = Subject.query.all()
+        return rt("Admin/Chapter/chapters.html" , chapters = chapters , subjects = subjects)
+    else:
+        return redirect(url_for('login'))
+
+
+
+#add Chapter route
+@app.route('/add_chapter' , methods = ['GET' , 'POST'])
+def add_chapter():
+    if ('username' in session) and (session['username'] == 'Admin'):
+        if request.method == 'GET':
+            
+            return rt("Admin/Chapter/add_chapter.html" , subjects = subjects)
+        elif request.method == 'POST':
+            chapterName = request.form['chp_name']
+            chapterDescription = request.form['chp_desc']
+            subjectID = request.form['sub_id']
+            chapter = Chapter(chapterName = chapterName , chapterDescription = chapterDescription , subjectID = subjectID)
+            db.session.add(chapter)
+            db.session.commit()
+            return redirect(url_for('chapters'))
+    else:
+        return redirect(url_for('login'))
+
+
+
+#edit Chapter route
+@app.route('/edit_chapter/<int:chapterID>' , methods = ['GET' , 'POST'])
+def edit_chapter(chapterID):
+    if ('username' in session) and (session['username'] == 'Admin'):
+        chapter = Chapter.query.filter_by(chapterID = chapterID).first()
+        
+        #error handling in case chapter not found
+        if not chapter:
+            return "Chapter not found!", 404
+    
+        if request.method == 'GET':            
+            return rt("Admin/Chapter/edit_chapter.html" , chapter = chapter)
+        
+        elif request.method == 'POST':
+            chapter.chapterName = request.form['chp_name']
+            chapter.chapterDescription = request.form['chp_desc']
+                                    
+            db.session.commit()
+            return redirect(url_for('chapters'))
+    else:
+        return redirect(url_for('login'))
+
+
+#delete chapter route
+@app.route('/del_chapter/<int:chapterID>' , methods = ['POST'])
+def del_chapter(chapterID):
+    if ('username' in session) and (session['username'] == 'Admin'):
+        chapter = Chapter.query.filter_by(chapterID = chapterID).first()
+        
+        #error handling in case chapter not found
+        if not chapter:
+            return "Chapter not found!", 404
+        
+        db.session.delete(chapter)
+        db.session.commit()
+        return redirect(url_for('chapters'))
+    else:
+        return redirect(url_for('login'))
+
+
+
+
+
+
+
+
+
 
 
 #create quiz route

@@ -10,12 +10,12 @@ Subject Management
 
 {% block content %}
 <div class="container-fluid" id="add_sub">
-    <h3 style="color: brown; font-family: cursive;">Add New Subject</h3>
+    <h3 style="color: brown; font-family: cursive;">Edit Subject</h3>
     <br>
     <form action="{{ url_for('edit_sub', subjectID=subject.subjectID) }}" method="post">
         <div class="mb-3">
             <label for="sub_name" class="form-label">Subject name</label>
-            <input name="sub_name"  type="text" class="form-control" id="sub_name" placeholder="{{subject.subjectName}}">
+            <input name="sub_name"  type="text" class="form-control" id="sub_name" placeholder="{{subject.subjectName}}" required>
         </div>
 
         <div class="mb-3">
@@ -23,7 +23,7 @@ Subject Management
             <textarea name="sub_desc"  type="text" class="form-control" id="sub_desc" rows="3" placeholder ="{{subject.subjectDescription}}"> {{subject.subjectDescription}} </textarea>
         </div>
 
-        <button type="submit" class="btn btn-success">Add Subject</button>
+        <button type="submit" class="btn btn-success">Save Changes</button>
     </form>
 
 

@@ -1,0 +1,39 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Add Chapter
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" id="add_sub">
+    <h3 style="color: brown; font-family: cursive;">Add New Chapter</h3>
+    <br>
+    <form action="/add_chapter" method="post">
+        <div class="mb-3">
+            <label for="chp_name" class="form-label">Chapter name</label>
+            <input name="chp_name"  type="text" class="form-control" id="chp_name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="chp_desc" class="form-label">Chapter description</label>
+            <textarea name="chp_desc"  type="text" class="form-control" id="chp_desc" required> </textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="sub_id" class="form-label">Subject ID</label>
+            <input name="sub_id"  type="text" class="form-control" id="sub_id" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Add Subject</button>
+    </form>
+
+
+</div>
+
+{% endblock %}
+
+
+
+{% block footer %}
+    this is feet
+{% endblock %}

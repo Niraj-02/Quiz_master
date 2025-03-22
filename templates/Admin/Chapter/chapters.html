@@ -16,13 +16,13 @@ Chapter Management
     <div class="card p-3"> <!-- makes it a card component with moderate padding -->
         <div class="d-flex"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
             <h4 style="color: rgb(43, 226, 58); margin-top: 15px;">Chapter list</h4>
-            <button class="btn btn-outline-primary" style="margin-left: 950px;" href="#" >+ Add Chapter</button>
+            
+            <a href="{{ url_for('add_chapter') }}" class="btn btn-outline-primary" style="margin-left: 950px;">+ Add Chapter</a>
         </div>
         {% for subject in subjects %}
         
         <div class="d-flex"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
-            <h6 style="color: blueviolet; margin-top: 15px;">{{subject.subjectName}}</h6>
-            
+            <p  class="col-4" style="font-size: large; color: blueviolet;">{{subject.subjectName}} (ID: {{subject.subjectID}})</p> 
         </div>
               
 
@@ -41,9 +41,13 @@ Chapter Management
                     <td class="col-1">{{ chapter.chapterID }}</td>
                     <td class="col-3">{{ chapter.chapterName }}</td>
                     <td class="col-6">{{ chapter.chapterDescription }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary">Edit</button>
-                        <button class="btn btn-sm btn-danger">Delete</button>
+                    <td class="d-flex">
+                        <a href="{{url_for('edit_chapter' , chapterID= chapter.chapterID)}}" class="btn btn-sm btn-primary">Edit</a>
+                        
+                        <form action="{{url_for('del_chapter' , chapterID= chapter.chapterID)}}" , method="post" , style="margin-left: 5px;">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                        
                     </td>
                 </tr>
                 {% endfor %}

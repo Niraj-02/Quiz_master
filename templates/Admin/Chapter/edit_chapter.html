@@ -1,0 +1,37 @@
+{% extends "Admin/admin_layout.html" %}
+
+{% block title %}
+Edit Chapter
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container-fluid" id="add_sub">
+    <h3 style="color: brown; font-family: cursive;">Edit Chapter</h3>
+    <br>
+    <form action="{{ url_for('edit_chapter', chapterID = chapter.chapterID) }}" method="post">
+        <div class="mb-3">
+            <label for="chp_name" class="form-label">Chapter name</label>
+            <input name="chp_name"  type="text" class="form-control" id="chp_name" placeholder="{{chapter.chapterName}}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="chp_desc" class="form-label">Subject description</label>
+            <textarea name="chp_desc"  type="text" class="form-control" id="chp_desc" rows="3"> {{chapter.chapterDescription}} </textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes </button>
+    </form>
+
+
+</div>
+
+{% endblock %}
+
+
+
+
+{% block footer %}
+    this is footer
+{% endblock %}
