@@ -96,7 +96,48 @@ def admin_dash():
         user = User.query.filter_by(username = session['username']).first()   
         today = datetime.now().date()     
         quizzes = Quiz.query.join(Chapter).filter(Quiz.date_of_quiz >= today).all()
-        return rt("Admin/admin_dash.html" , user = user , quizzes = quizzes)
+
+        #summary to be added here as well
+        today = datetime.now().date()
+
+        # chart for max score in each quiz
+        past_quizzes = Quiz.query.filter(func.date(Quiz.date_of_quiz) <= today).all()  #get all past quizzes
+        quiz_list = []
+        top_scores = []
+
+        for quiz in past_quizzes:
+            quiz_list.append(quiz.quizName)
+            max = Scores.query.filter_by(quizID = quiz.quizID).order_by(Scores.score.desc()).first()
+            if max is not None:
+                top_scores.append(max.score)
+            else:
+                top_scores.append(0)
+            
+        
+        #chart for subject wise quiz attempts
+        #subject has multiple chapters and each chapter has multiple quizzes and each quiz has multiple attempts which is to be counted.
+        subject_list = []
+        attempts = []
+
+        subjects = Subject.query.all()
+        for subject in subjects:
+            subject_list.append(subject.subjectName)
+            attempts_count = 0
+            
+            chapters = Chapter.query.filter_by(subjectID = subject.subjectID).all()
+            for chapter in chapters:
+
+                quizzes = Quiz.query.filter_by(chapterID = chapter.chapterID).all()
+                for quiz in quizzes:
+                    x = Scores.query.filter_by(quizID = quiz.quizID).count()
+                    attempts_count += x
+            
+            attempts.append(attempts_count)
+        
+
+            
+
+        return rt("Admin/admin_dash.html" , user = user , quizzes = quizzes, quiz_list = quiz_list , top_scores = top_scores, subject_list = subject_list , attempts = attempts)
     else:
         return redirect(url_for('login'))
 
@@ -562,7 +603,38 @@ def profile(username):
 
 
 
+#route for user summary
+@app.route('/<string:username>/summary' , methods = ['GET' , 'POST'])
+def summary(username):
+    if 'username' not in session:
+        return redirect(url_for('login'))
 
+    user = User.query.filter_by(username = username).first()
+    if user is None:
+        return "User not found!", 404
+    
+    #will add the summary part here later
+    #total quizzes attempted
+    total_quizzes = Scores.query.filter_by(userID = user.userID).count()
+
+
+    
+    #score chart
+    scores = Scores.query.filter_by(userID = user.userID).all() #all the scores of user
+    quiz_name = []
+    user_score = []
+    total_marks = []
+
+    for score in scores:
+        quiz_name.append(score.quiz.quizName)
+        user_score.append(score.score)
+        total_questions = len(score.quiz.questions) #total questions in the quiz
+        total_marks.append(total_questions)
+    
+    
+    #perfoemance over time
+
+    return rt("User/summary.html" , user = user , total_quizzes = total_quizzes ,  quiz_name = quiz_name , user_score = user_score , total_marks = total_marks) 
 
 
 

@@ -1,0 +1,61 @@
+{% extends "User/user_layout.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">Summary</h2>
+</div>
+<br>
+
+<div class="container mt-4">
+    <h4 class="fw-bold">Total Quizzes attempted: {{total_quizzes}}</h4>
+</div>
+<br>
+
+<!-- scorechart here -->
+ <div class="container mt-4" style="width: 60%;">
+    <canvas id="scoreChart"></canvas> 
+    <p class="text-center"><strong>Quiz Scores summary</strong></p>
+ </div>
+
+ <script>
+    let quizNames = JSON.parse('{{ quiz_name | tojson | safe }}');
+    let scores = JSON.parse('{{ user_score | tojson | safe }}');
+</script>
+
+<script>
+    if (quizNames.length > 0 && scores.length > 0) {
+        const ctx = document.getElementById('scoreChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: quizNames,
+            datasets: [{
+                label: 'Score out of 10',
+                data: scores,
+                borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                            stepSize: 1,
+                            
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        console.log("No data available for the chart.");
+    }
+</script>
+{% endblock %}
+

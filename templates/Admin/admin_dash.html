@@ -9,45 +9,148 @@ Admin-dashboard
 
 
 {% block content %}
-    <div class="container mt-4 text-center">
-        <h2 class="fw-bold">ADMIN DASHBOARD</h2>
-    </div>
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">ADMIN DASHBOARD</h2>
+</div>
 
-    <div class="container mt-4">
-        <div class="card p-3"> <!-- makes it a card component with moderate padding -->
+<div class="container mt-4">
+    <div class="card p-3"> <!-- makes it a card component with moderate padding -->
 
-            <div class="d-flex"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
+        <div class="d-flex justify-content-between"> <!-- d-flex makes the div thingy flexible to add elements in a single row   -->
             <h5 style="color: blueviolet;">Upcoming Quizzes</h5>
-            </div>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Quiz ID</th>
-                        <th>Date</th>
-                        <th>Duration (mins)</th>
-                        <th>Chapter Name</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for quiz in quizzes %}
-                    <tr>
-                        <td>{{ quiz.quizID }}</td>
-                        <td>{{ quiz.date_of_quiz.strftime('%d-%m-%Y') }}</td>
-                        <td>{{ quiz.duration }}</td>
-                        <td>{{ quiz.chapter.chapterName }}</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary">Edit</button>
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            
+            <a href="{{url_for('create_quiz')}}" class="btn btn-outline-success" >Create Quiz</a>
         </div>
 
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Quiz ID</th>
+                    <th>Date</th>
+                    <th>Duration (mins)</th>
+                    <th>Chapter Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for quiz in quizzes %}
+                <tr>
+                    <td>{{ quiz.quizID }}</td>
+                    <td>{{ quiz.date_of_quiz.strftime('%d-%m-%Y') }}</td>
+                    <td>{{ quiz.duration }}</td>
+                    <td>{{ quiz.chapter.chapterName }}</td>
+                    <td>
+                        <a href="{{url_for('edit_quiz' , quizID=quiz.quizID)}}" class="btn btn-sm btn-outline-primary" >Edit</a>
+                        <form action="{{url_for('del_quiz' , quizID=quiz.quizID)}}" , method="post" , style="margin-left: 5px; display: inline;">
+                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+<br><br>
+
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">Summary</h2>
+</div>
+
+
+<div class="container mt-4 d-flex justify-content-between">
+    <div class="card p-3" style="width: 45%;">
+        <canvas id="topscores"></canvas> 
+        <p class="text-center"><strong>Highest scores</strong></p>
+    </div>
+    <div class="card p-3" style="width: 45%;">
+        <canvas id="quiz_attempts" ></canvas> 
+        <p class="text-center"><strong>Subject wise Quiz attempts</strong></p>
+    </div>
+    
+</div>
+<!-- 
+<div class="container mt-4" style="width: 60%;">
+    <canvas id="topscores"></canvas> 
+    <p class="text-center"><strong>Highest scores</strong></p>
+</div>
+
+<br><br>
+
+<div class="container mt-4" style="width: 60%;">
+    <canvas id="quiz_attempts"></canvas> 
+    <p class="text-center"><strong>Subject wise Quiz attempts</strong></p>
+</div> -->
+
+
+
+
+
+ <script>
+    let quiz_list = JSON.parse('{{ quiz_list | tojson | safe }}');
+    let top_scores = JSON.parse('{{ top_scores | tojson | safe }}');
+
+    if (quiz_list.length > 0 && top_scores.length > 0){
+
+        const ctx = document.getElementById('topscores').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: quiz_list,
+            datasets: [{
+                label: 'Top Scores',
+                data: top_scores,
+                borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                            stepSize: 1,
+                            
+                        }
+                    }
+                }
+            }
+        });
+
+    } else {
+        console.log("No data available for the chart.");
+    }
+
+ </script>
+
+
+
+<script>
+    let subject_list = JSON.parse('{{ subject_list | tojson | safe }}');
+    let attempts = JSON.parse('{{ attempts | tojson | safe }}');
+
+    if (quiz_list.length > 0 && top_scores.length > 0){
+
+        const ctx = document.getElementById('quiz_attempts').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: subject_list,
+            datasets: [{
+                label: 'Total attempts',
+                data: attempts,
+                borderWidth: 1,
+                hoverOffset: 4,
+                }]
+            }
+        });
+
+    } else {
+        console.log("No data available for the chart.");
+    }
+
+ </script>
 
 {% endblock %}
 
