@@ -10,6 +10,46 @@ User_dashboard
 
 {% block content %}
 <div class="container mt-4 text-center">
+    <h2 class="fw-bold">Ongoing Quiz</h2>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-3"> <!-- makes it a card component with moderate padding -->
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-2">Name</th>
+                    <th class="col-2">Chapter</th>
+                    <th class="col-2">Number of questions</th>
+                    <th class="col-1">Duration</th>                    
+                    <th class="col-1">Date</th>
+                    <th class="col-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for quiz in ongoing_quizzes %}
+                <tr>
+                    <td >{{ quiz.quizName }}</td>
+                    <td >{{ quiz.chapter.chapterName }}</td>
+                    <td >{{ quiz.questions|length }}</td>
+                    <td >{{ quiz.duration }}</td>
+                    <td >{{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</td>
+                    <td class="d-flex">
+                        <a href="{{ url_for('quiz_details' , quizID = quiz.quizID , username=session['username']) }}" class="btn btn-sm btn-outline-primary">View</a>
+                        <a href="{{url_for('attempt_quiz', quizID = quiz.quizID , username=session['username'])}}" class="btn btn-sm btn-outline-success" style="margin-left: 5px;">Start</a>                       
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+
+
+<div class="container mt-4 text-center">
     <h2 class="fw-bold">Upcoming Quiz</h2>
 </div>
 
@@ -19,24 +59,56 @@ User_dashboard
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="col-1">Name</th>
-                    <th class="col-3">Duration</th>
-                    <th class="col-4">Number of questions</th>
-                    <th class="col-3">Date</th>
-                    <th class="col-2">Actions</th>
+                    <th class="col-2">Name</th>
+                    <th class="col-2">Chapter</th>
+                    <th class="col-2">Number of questions</th>
+                    <th class="col-2">Duration</th>  
+                    <th class="col-2">Date</th>                    
                 </tr>
             </thead>
             <tbody>
                 {% for quiz in upcoming_quizzes %}
                 <tr>
-                    <td class="col-1">{{ quiz.quizName }}</td>
-                    <td class="col-1">{{ quiz.duration }}</td>
-                    <td class="col-1">{{ quiz.questions|length }}</td>
-                    <td class="col-6">{{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</td>
-                    <td class="d-flex">
-                        <a href="{{ url_for('quiz_details' , quizID = quiz.quizID , username=session['username']) }}" class="btn btn-sm btn-outline-primary">View</a>
-                        <a href="#" class="btn btn-sm btn-outline-success" style="margin-left: 5px;">Start</a>                       
-                    </td>
+                    <td >{{ quiz.quizName }}</td>
+                    <td >{{ quiz.chapter.chapterName }}</td>
+                    <td >{{ quiz.questions|length }}</td>
+                    <td >{{ quiz.duration }}</td>
+                    <td >{{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</td>                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+
+
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">Past Quiz</h2>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-3"> <!-- makes it a card component with moderate padding -->
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-2">Name</th>
+                    <th class="col-2">Chapter</th>
+                    <th class="col-2">Number of questions</th>
+                    <th class="col-2">Duration</th>  
+                    <th class="col-2">Date</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for quiz in past_quizzes %}
+                <tr>
+                    <td >{{ quiz.quizName }}</td>
+                    <td >{{ quiz.chapter.chapterName }}</td>
+                    <td >{{ quiz.questions|length }}</td>
+                    <td >{{ quiz.duration }}</td>
+                    <td >{{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</td>                    
                 </tr>
                 {% endfor %}
             </tbody>

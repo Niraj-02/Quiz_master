@@ -1,0 +1,50 @@
+{% extends "User/user_layout.html" %}
+
+{% block title %}
+User_dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">{{quiz.quizName}}</h2>
+</div>
+
+<form method="POST">
+    <div class="container mt-4">
+        {% for question in quiz.questions %}
+        <div class="card p-3">
+            
+
+            <h4>{{loop.index}}. {{question.question}}</h4>
+            <p>Choose the correct answer:</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="question_{{ question.questionID }}" value="{{ question.A }}">
+                <label class="form-check-label">{{ question.A }}</label>
+            </div>
+            
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="question_{{ question.questionID }}" value="{{ question.B }}">
+                <label class="form-check-label">{{ question.B }}</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="question_{{ question.questionID }}" value="{{ question.C }}">
+                <label class="form-check-label">{{ question.C }}</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="question_{{ question.questionID }}" value="{{ question.D }}">
+                <label class="form-check-label">{{ question.D }}</label>
+            </div>
+
+            
+        </div>
+        <br>
+        {% endfor %}
+        <button type="submit" class="btn btn-success">Submit</button>
+    </div>
+    
+</form>
+{% endblock %}

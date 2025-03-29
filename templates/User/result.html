@@ -1,0 +1,44 @@
+{% extends "User/user_layout.html" %}
+
+{% block title %}
+Quiz Scores
+{% endblock %}
+
+
+
+{% block content %}
+<!-- user = user , scores = scores parameters -->
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">Quiz result</h2>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-3">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-1">Quiz ID</th>
+                    <th class="col-2">Chapter</th>
+                    <th class="col-2">Quiz Name</th>
+                    <th class="col-2">No. of Questions</th>
+                    <th class="col-2">Date</th>
+                    <th class="col-2">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score in scores %}
+                <tr>
+                    <td >{{ score.quizID }}</td>
+                    <td >{{ score.quiz.chapter.chapterName }}</td> <!--used 2x backref -->
+                    <td >{{ score.quiz.quizName }}</td>
+                    <td >{{ score.quiz.questions | length }}</td>
+                    <td >{{ score.quiz.date_of_quiz }}</td>
+                    <td >{{ score.score }}</td>                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

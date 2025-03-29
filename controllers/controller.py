@@ -9,6 +9,7 @@ from models.model import *
 
 #random imports
 from datetime import datetime
+from sqlalchemy import func
 
 
 #this will be the homepage of the website. It is not finised yet.
@@ -444,9 +445,12 @@ def dashboard(username):
 
     user = User.query.filter_by(username = username).first()
     today = datetime.now().date()
-    upcoming_quizzes = Quiz.query.filter(Quiz.date_of_quiz >= today).all()      
+   
+    upcoming_quizzes = Quiz.query.filter(func.date(Quiz.date_of_quiz) >= today).all()      
+    ongoing_quizzes = Quiz.query.filter(func.date(Quiz.date_of_quiz) == today).all()
+    past_quizzes = Quiz.query.filter(func.date(Quiz.date_of_quiz) < today).all()
 
-    return rt("User/dashboard.html" , user = user , upcoming_quizzes = upcoming_quizzes)    
+    return rt("User/dashboard.html" , user = user , upcoming_quizzes = upcoming_quizzes , ongoing_quizzes = ongoing_quizzes , past_quizzes = past_quizzes)    
     
 
 
@@ -461,23 +465,70 @@ def quiz_details(username , quizID):
     
     return rt("User/quiz_details.html" , quiz = quiz)
 
+
+
+
 #route for attempting quiz
 @app.route('/dashboard/<string:username>/attempt_quiz/<int:quizID>' , methods = ['GET' , 'POST'])
 def attempt_quiz(username , quizID):
     if 'username' not in session:
         return redirect(url_for('login'))
     
+    user = User.query.filter_by(username = username).first()
     quiz = Quiz.query.filter_by(quizID = quizID).first()
+    questions = Question.query.filter_by(quizID=quizID).all()
     #access questions thru quiz.questions
     if quiz is None:
         return "Quiz not found!", 404
     
+    #handles if quiz is already attempted by the user.
+    if Scores.query.filter_by(quizID = quizID , userID = user.userID).first():
+        return "You have already attempted this quiz!", 404
 
+    #handles if quiz is not active yet.
+    if func.date(quiz.date_of_quiz) != datetime.now().date():
+        return "This quiz cannot be attempted today!", 404
+    
+
+    if request.method == 'POST':
+        #handle quiz submission here
+        #get answers from form and save to database
+        #calculate score and save to database
+        
+        score = 0
+        total_questions = len(questions) #for total score. each questions holds 1 mark.
+
+        for question in questions:
+            user_answer = request.form.get(f'question_{question.questionID}') #used .get cuz if its empty it will cause error aka retun NONE.
+            if user_answer and user_answer == question.answer: #check if the answer exists and is correct
+                score += 1
+        
+        #save the score in the db
+        user = User.query.filter_by(username = username).first()
+        user_score = Scores(userID = user.userID , quizID = quizID , score = score)
+
+        db.session.add(user_score)
+        db.session.commit()
+
+        return redirect(url_for('Score' , username = username , quizID = quizID)) #redirect to result page
+        
     
     return rt("User/attempt_quiz.html" , quiz = quiz )
 
 
 
+
+#route for viewing result
+@app.route('/dashboard/<string:username>/result' , methods = ['GET' , 'POST'])
+def result(username):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    user = User.query.filter_by(username = username).first()
+    scores = Scores.query.filter_by(userID = user.userID).all()
+    
+    
+    return rt("User/result.html" , user = user , scores = scores) #will access quiz using backref part.
 
 
 
