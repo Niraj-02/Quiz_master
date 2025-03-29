@@ -1,0 +1,39 @@
+{% extends "User/user_layout.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" id="profile">
+    <h3 style="color: brown; font-family: cursive;">User Profile</h3>
+    <br>
+    <form method="post">
+        <div class="mb-3">
+            <label for="fullname" class="form-label">Full name</label>
+            <textarea name="fullname"  type="text" class="form-control" id="fullname" rows="1">{{user.fullname}}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="username" class="form-label">username</label>
+            <textarea name="username"  type="text" class="form-control" id="username" rows="1">{{user.username}}</textarea>
+        </div>
+        
+        <div class="mb-3">
+            <label for="password" class="form-label">password</label>
+            <textarea name="password"  type="text" class="form-control" id="password" rows="1">{{user.password}}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">email</label>
+            <textarea name="email"  type="text" class="form-control" id="email" rows="1">{{user.email}}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes </button>
+    </form>
+
+
+</div>
+
+
+{% endblock %}

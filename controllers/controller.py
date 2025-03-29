@@ -533,6 +533,35 @@ def result(username):
 
 
 
+#route for profile changes
+@app.route('/<string:username>/profile' , methods = ['GET' , 'POST'])
+def profile(username):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    user = User.query.filter_by(username = username).first()
+    if user is None:
+        return "User not found!", 404
+    
+    if request.method == 'POST':
+        user.fullname = request.form['fullname']
+        user.email = request.form['email']
+        user.username = request.form['username']
+        user.password = request.form['password']     
+
+        db.session.commit()   
+      
+        if session['username'] != user.username:  #lost braincells here
+            session.pop('username' , None)
+            session['username'] = user.username        
+        
+        return redirect(url_for('dashboard' , username = user.username)) 
+    
+    if request.method == 'GET':
+        return rt("User/profile.html" , user = user)
+
+
+
 
 
 
