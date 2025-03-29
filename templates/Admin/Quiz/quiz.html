@@ -42,8 +42,8 @@ Quiz Management
                             {% for quiz in chapter.quiz %}
 
                             <tr>
-                                <td>{{ quiz.quizName}}</td>
                                 <td>{{ quiz.quizID }}</td>
+                                <td>{{ quiz.quizName}}</td>
                                 <td>{{ quiz.date_of_quiz.strftime('%d-%b-%Y') }}</td> <!-- Format date -->
                                 <td>{{ quiz.duration }} mins</td>
                                 <td class=" d-flex align-items-center">

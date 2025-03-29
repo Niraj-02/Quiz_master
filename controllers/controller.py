@@ -300,7 +300,14 @@ def edit_quiz(quizID):
     elif request.method == 'POST':
         date_of_quiz = request.form['date_of_quiz']
         formatted_date = datetime.strptime(date_of_quiz, '%Y-%m-%d').date()  # Convert to date format
-        duration = request.form['duration']
+        quiz.date_of_quiz = formatted_date
+        quiz.duration = request.form['duration']
+        quiz.quizName = request.form['name']
+        
+        db.session.commit()
+        return redirect(url_for('quiz'))
+
+
         
 
 #route for viewing quiz (edit and add questions here)
@@ -344,13 +351,13 @@ def add_question(quizID):
         return rt("Admin/Question/add_question.html" , quizID = quizID)
     elif request.method == 'POST':
         statement = request.form['question']
-        option1 = request.form['opt_1']
-        option2 = request.form['opt_2']
-        option3 = request.form['opt_3']
-        option4 = request.form['opt_4']
-        correct_option = request.form['answer']        
+        A = request.form['A']
+        B = request.form['B']
+        C = request.form['C']
+        D = request.form['D']
+        answer = request.form['answer']        
         
-        question = Question(question = statement , option1 = option1 , option2 = option2 , option3 = option3 , option4 = option4 , correct_option = correct_option , quizID = quizID)
+        question = Question(question = statement , A=A , B = B , C = C , D = D , answer = answer , quizID = quizID)
         db.session.add(question)
         db.session.commit()
         return redirect(url_for('view_quiz'))
@@ -371,11 +378,11 @@ def edit_question(questionID):
     
     elif request.method == 'POST':
         question.question = request.form['question']
-        question.option1 = request.form['opt_1']
-        question.option2 = request.form['opt_2']
-        question.option3 = request.form['opt_3']
-        question.option4 = request.form['opt_4']
-        question.correct_option = request.form['answer']
+        question.A = request.form['A']
+        question.B = request.form['B']
+        question.C = request.form['C']
+        question.D = request.form['D']
+        question.answer = request.form['answer']
         
         db.session.commit()
         return redirect(url_for('view_quiz'))
@@ -454,6 +461,20 @@ def quiz_details(username , quizID):
     
     return rt("User/quiz_details.html" , quiz = quiz)
 
+#route for attempting quiz
+@app.route('/dashboard/<string:username>/attempt_quiz/<int:quizID>' , methods = ['GET' , 'POST'])
+def attempt_quiz(username , quizID):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    quiz = Quiz.query.filter_by(quizID = quizID).first()
+    #access questions thru quiz.questions
+    if quiz is None:
+        return "Quiz not found!", 404
+    
+
+    
+    return rt("User/attempt_quiz.html" , quiz = quiz )
 
 
 

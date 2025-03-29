@@ -1,0 +1,48 @@
+{% extends "User/user_layout.html" %}
+
+{% block title %}
+User_dashboard
+{% endblock %}
+
+
+
+
+
+{% block content %}
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold">Upcoming Quiz</h2>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-3"> <!-- makes it a card component with moderate padding -->
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-1">Name</th>
+                    <th class="col-3">Duration</th>
+                    <th class="col-4">Number of questions</th>
+                    <th class="col-3">Date</th>
+                    <th class="col-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for quiz in upcoming_quizzes %}
+                <tr>
+                    <td class="col-1">{{ quiz.quizName }}</td>
+                    <td class="col-1">{{ quiz.duration }}</td>
+                    <td class="col-1">{{ quiz.questions|length }}</td>
+                    <td class="col-6">{{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</td>
+                    <td class="d-flex">
+                        <a href="{{ url_for('quiz_details' , quizID = quiz.quizID , username=session['username']) }}" class="btn btn-sm btn-outline-primary">View</a>
+                        <a href="#" class="btn btn-sm btn-outline-success" style="margin-left: 5px;">Start</a>                       
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+{% endblock %}
+

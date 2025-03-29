@@ -45,18 +45,18 @@ class Quiz(db.Model):
     chapterID = db.Column(db.Integer, db.ForeignKey('chapter.chapterID'), nullable=False)
     
     questions = db.relationship('Question', backref='quiz', lazy=True , cascade="all, delete")
-    scores = db.relationship('Score', backref='quiz', lazy=True , cascade="all, delete")
+    scores = db.relationship('Scores', backref='quiz', lazy=True , cascade="all, delete")
 
 
 class Question(db.Model):
     __tablename__ = 'question'
     questionID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     question = db.Column(db.String(120), nullable=False)
-    option1 = db.Column(db.String(120), nullable=False)
-    option2 = db.Column(db.String(120), nullable=False)
-    option3 = db.Column(db.String(120), nullable=False)
-    option4 = db.Column(db.String(120), nullable=False)
-    correct_option = db.Column(db.String(120), nullable=False)
+    A = db.Column(db.String(120), nullable=False)
+    B = db.Column(db.String(120), nullable=False)
+    C = db.Column(db.String(120), nullable=False)
+    D = db.Column(db.String(120), nullable=False)
+    answer = db.Column(db.String(120), nullable=False)
     quizID = db.Column(db.Integer, db.ForeignKey('quiz.quizID'), nullable=False)
     
 
@@ -68,5 +68,5 @@ class Scores(db.Model):
     quizID = db.Column(db.Integer, db.ForeignKey('quiz.quizID'), nullable=False)
     score = db.Column(db.Integer, nullable=False)
     
-    quiz = db.relationship('Quiz', backref='scores', lazy=True)
+    
     
