@@ -127,8 +127,8 @@ def admin_dash():
             chapters = Chapter.query.filter_by(subjectID = subject.subjectID).all()
             for chapter in chapters:
 
-                quizzes = Quiz.query.filter_by(chapterID = chapter.chapterID).all()
-                for quiz in quizzes:
+                past_quizzes = Quiz.query.filter_by(chapterID = chapter.chapterID).all()
+                for quiz in past_quizzes:
                     x = Scores.query.filter_by(quizID = quiz.quizID).count()
                     attempts_count += x
             
@@ -297,7 +297,7 @@ def quiz():
         subjects = Subject.query.all()
         chapters = Chapter.query.all()
         
-        return rt("Admin/Quiz/quiz.html", quizzes = quizzes , subjects = subjects , chapters = chapters)
+        return rt("Admin/Quiz/quiz.html", quizzes = quizzes , chapters = chapters)
     
 
 #create quiz route   
@@ -472,6 +472,40 @@ def del_user(userID):
         return redirect(url_for('users'))
     else:
         return redirect(url_for('login'))
+
+
+
+#route for search bar in Admin dash
+@app.route('/search' , methods = ['GET' , 'POST'])
+def search():
+    if ('username' not in session) or (session['username'] != 'Admin'):
+        return redirect(url_for('login'))
+    
+    category = request.form.get('category')
+    search_query = request.form.get('search').strip()
+
+    if request.method == 'POST':
+        if category == 'subject':
+            subjects = Subject.query.filter(Subject.subjectName.ilike(f"%{search_query}%")).all()
+            
+            return rt("Admin/Subject/subjects.html" , subjects = subjects)
+            
+        
+        elif category == 'quiz':
+            quizzes = Quiz.query.filter(Quiz.quizName.ilike(f"%{search_query}%")).all()
+            
+            return rt("Admin/Quiz/view_quiz.html" , quizzes = quizzes)
+
+        
+        elif category == 'username':
+            users = User.query.filter(User.username.ilike(f"%{search_query}%")).all()
+            
+            return rt("Admin/User/users.html" , users = users)
+
+        else:
+            return "Query not found!", 404
+        
+
 
 
 

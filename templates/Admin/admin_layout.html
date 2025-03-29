@@ -49,12 +49,27 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ url_for('users')}}">Users</a>
                     </li>
-
-                    <li class="nav-item" style="margin-left: 1050px;">
-                        <a class="nav-link active" href="{{ url_for('logout')}}"><strong>Logout</strong></a>
-                    </li>
-                    
                 </ul>
+
+                    
+                <form method="POST" action ='/search' class="d-flex" style="margin-left: 300px;">
+                    <select name="category" class="form-select">
+                        <option value="" selected>Select Type</option>
+                        <option value="subject">Search for subject</option>
+                        <option value="username">Search for UserName</option>
+                        <option value="quiz">Search for a Quiz</option>
+                    </select>
+                    <input type="text" name="search" class="form-control me-2" placeholder="Search" required>
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+                    
+                    
+                <a class="nav-link active" href="{{ url_for('logout')}}" style="margin-left: 350px;"><strong>Logout</strong></a>
+                    
+
+
+                    
+                
                 </div>
             </div>
             </nav>
