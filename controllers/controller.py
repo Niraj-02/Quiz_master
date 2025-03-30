@@ -12,7 +12,6 @@ from datetime import datetime
 from sqlalchemy import func
 
 
-#this will be the homepage of the website. It is not finised yet.
 @app.route('/' , methods = ['GET' , 'POST'])
 def home():
     return redirect(url_for('login')) #redirect to login page
