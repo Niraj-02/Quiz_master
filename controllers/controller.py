@@ -558,8 +558,8 @@ def attempt_quiz(username , quizID):
     if Scores.query.filter_by(quizID = quizID , userID = user.userID).first():
         return "You have already attempted this quiz!", 404
 
-    #handles if quiz is not active yet.
-    if func.date(quiz.date_of_quiz) != datetime.now().date():
+    #handles if quiz is not active yet.    
+    if quiz.date_of_quiz.date() != datetime.now().date():
         return "This quiz cannot be attempted today!", 404
     
 
@@ -583,7 +583,7 @@ def attempt_quiz(username , quizID):
         db.session.add(user_score)
         db.session.commit()
 
-        return redirect(url_for('Score' , username = username , quizID = quizID)) #redirect to result page
+        return redirect(url_for('result' , username = username)) #redirect to result page
         
     
     return rt("User/attempt_quiz.html" , quiz = quiz )
