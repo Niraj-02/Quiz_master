@@ -15,8 +15,7 @@ from sqlalchemy import func
 #this will be the homepage of the website. It is not finised yet.
 @app.route('/' , methods = ['GET' , 'POST'])
 def home():
-    print("route accessed")
-    return rt("home.html")
+    return redirect(url_for('login')) #redirect to login page
 
 
 # route for signup

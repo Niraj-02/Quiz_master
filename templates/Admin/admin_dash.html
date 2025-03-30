@@ -10,7 +10,7 @@ Admin-dashboard
 
 {% block content %}
 <div class="container mt-4 text-center">
-    <h2 class="fw-bold">ADMIN DASHBOARD</h2>
+    <h2 class="fw-bold" style="color: darkgoldenrod;">ADMIN DASHBOARD</h2>
 </div>
 
 <div class="container mt-4">
@@ -32,20 +32,31 @@ Admin-dashboard
                 </tr>
             </thead>
             <tbody>
-                {% for quiz in quizzes %}
-                <tr>
-                    <td>{{ quiz.quizID }}</td>
-                    <td>{{ quiz.date_of_quiz.strftime('%d-%m-%Y') }}</td>
-                    <td>{{ quiz.duration }}</td>
-                    <td>{{ quiz.chapter.chapterName }}</td>
-                    <td>
-                        <a href="{{url_for('edit_quiz' , quizID=quiz.quizID)}}" class="btn btn-sm btn-outline-primary" >Edit</a>
-                        <form action="{{url_for('del_quiz' , quizID=quiz.quizID)}}" , method="post" , style="margin-left: 5px; display: inline;">
-                            <button class="btn btn-sm btn-outline-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
+                {%if not quizzes %}
+                    <tr>
+                        <td colspan="4">No quiz scheduled</td>
+                    </tr>
+                    <!-- <p>No quiz scheduled</p> -->
+                    
+                {% else %}
+                
+
+                    {% for quiz in quizzes %}
+                    <tr>
+                        <td>{{ quiz.quizID }}</td>
+                        <td>{{ quiz.date_of_quiz.strftime('%d-%m-%Y') }}</td>
+                        <td>{{ quiz.duration }}</td>
+                        <td>{{ quiz.chapter.chapterName }}</td>
+                        <td>
+                            <a href="{{url_for('edit_quiz' , quizID=quiz.quizID)}}" class="btn btn-sm btn-outline-primary" >Edit</a>
+                            <form action="{{url_for('del_quiz' , quizID=quiz.quizID)}}" , method="post" , style="margin-left: 5px; display: inline;">
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                {% endif %}
             </tbody>
         </table>
         
@@ -53,8 +64,11 @@ Admin-dashboard
 </div>
 <br><br>
 
+
+<!-- summary part starts here  -->
+
 <div class="container mt-4 text-center">
-    <h2 class="fw-bold">Summary</h2>
+    <h2 class="fw-bold" style="color: cadetblue;">Summary</h2>
 </div>
 
 
@@ -106,7 +120,11 @@ Admin-dashboard
         });
 
     } else {
-        console.log("No data available for the chart.");
+        const ctx = document.getElementById('topscores').getContext('2d');
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'gray';
+        ctx.fillText('No data available for the chart.');
+        console.log("No data available for the chart.", ctx.canvas.width / 2, ctx.canvas.height / 2);
     }
 
  </script>

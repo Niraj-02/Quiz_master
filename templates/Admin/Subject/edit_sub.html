@@ -1,7 +1,7 @@
 {% extends "Admin/admin_layout.html" %}
 
 {% block title %}
-Subject Management
+Edit Subject
 {% endblock %}
 
 
@@ -20,7 +20,7 @@ Subject Management
 
         <div class="mb-3">
             <label for="sub_desc" class="form-label">Subject description</label>
-            <textarea name="sub_desc"  type="text" class="form-control" id="sub_desc" rows="3" placeholder ="{{subject.subjectDescription}}"> {{subject.subjectDescription}} </textarea>
+            <textarea name="sub_desc"  type="text" class="form-control" id="sub_desc" rows="3" placeholder ="{{subject.subjectDescription}}">{{subject.subjectDescription}}</textarea>
         </div>
 
         <button type="submit" class="btn btn-success">Save Changes</button>

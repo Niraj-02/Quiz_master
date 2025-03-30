@@ -39,23 +39,34 @@ Quiz Management
                             </tr>
                         </thead>
                         <tbody>
-                            {% for quiz in chapter.quiz %}
 
-                            <tr>
-                                <td>{{ quiz.quizID }}</td>
-                                <td>{{ quiz.quizName}}</td>
-                                <td>{{ quiz.date_of_quiz.strftime('%d-%b-%Y') }}</td> <!-- Format date -->
-                                <td>{{ quiz.duration }} mins</td>
-                                <td class=" d-flex align-items-center">
-                                    <a href="{{url_for('edit_quiz' , quizID=quiz.quizID)}}" class="btn btn-sm btn-outline-primary" >Edit</a>
-                                    
-                                    <form action="{{url_for('del_quiz' , quizID=quiz.quizID)}}" , method="post" , style="margin-left: 5px; display: inline;">
-                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
-                                    </form>
-                                    
-                                </td>                                
-                            </tr>
-                            {% endfor %}
+                            {% if not chapter.quiz %}
+                                <tr>
+                                    <td colspan="4">No quiz scheduled</td>
+                                </tr>
+                                <!-- <p>No quiz scheduled</p> -->
+                    
+                    
+                    
+                            {% else %}
+                                {% for quiz in chapter.quiz %}
+
+                                <tr>
+                                    <td>{{ quiz.quizID }}</td>
+                                    <td>{{ quiz.quizName}}</td>
+                                    <td>{{ quiz.date_of_quiz.strftime('%d-%b-%Y') }}</td> <!-- Format date -->
+                                    <td>{{ quiz.duration }} mins</td>
+                                    <td class=" d-flex align-items-center">
+                                        <a href="{{url_for('edit_quiz' , quizID=quiz.quizID)}}" class="btn btn-sm btn-outline-primary" >Edit</a>
+                                        
+                                        <form action="{{url_for('del_quiz' , quizID=quiz.quizID)}}" , method="post" , style="margin-left: 5px; display: inline;">
+                                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                        
+                                    </td>                                
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
